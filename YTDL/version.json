@@ -1,6 +1,6 @@
 {
-  "version": "4.2",
-  "changelog": "Animations grenouille, vitesse optimisee, miniature, import AE fiable",
+  "version": "4.4",
+  "changelog": "Couleurs bleu/vert restaurees",
   "files": [
     "js/app.js",
     "index.html",
