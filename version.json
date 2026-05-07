@@ -1,0 +1,10 @@
+{
+  "version": "4.3",
+  "changelog": "Test mise a jour - interface rose",
+  "files": [
+    "js/app.js",
+    "index.html",
+    "frog.png",
+    "jsx/host.jsx"
+  ]
+}
