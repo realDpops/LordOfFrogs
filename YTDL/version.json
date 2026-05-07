@@ -1,0 +1,10 @@
+{
+  "version": "4.2",
+  "changelog": "Animations grenouille, vitesse optimisee, miniature, import AE fiable",
+  "files": [
+    "js/app.js",
+    "index.html",
+    "frog.png",
+    "jsx/host.jsx"
+  ]
+}
