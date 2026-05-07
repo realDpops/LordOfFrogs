@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<title>Lord of Frogs</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Mono:wght@700&display=swap');
+
+:root{
+  --bg:#0f0810;
+  --border:rgba(100,180,255,.15);
+  --blue:#ff4a9e;
+  --green:#ff6eb4;
+  --text:#c8dff0;
+  --dim:#5a2a4a;
+  --glow-b:rgba(255,74,158,.12);
+  --glow-g:rgba(255,110,180,.1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{
+  width:100%;height:100%;
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Inter',sans-serif;
+  font-size:11px;
+  overflow-x:hidden;
+}
+.app{
+  display:flex;flex-direction:column;
+  height:100vh;padding:8px;gap:6px;
+  overflow-y:auto;overflow-x:hidden;
+}
+.app::-webkit-scrollbar{width:2px}
+.app::-webkit-scrollbar-thumb{background:var(--border)}
+
+/* HEADER */
+.hdr{
+  display:flex;flex-direction:column;align-items:center;
+  gap:4px;padding:4px 0 6px;
+  border-bottom:1px solid var(--border);
+  flex-shrink:0;
+}
+.frog{width:36px;height:36px;object-fit:contain;flex-shrink:0;animation:bob 3s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+.hdr-t{font-family:'Space Mono',monospace;font-size:12px;font-weight:700;color:#fff;line-height:1.1;text-align:center;text-shadow:0 0 20px rgba(255,74,158,.4)}
+.hdr-s{font-size:7px;color:var(--dim);letter-spacing:.1em;text-transform:uppercase;text-align:center}
+
+/* SECTION */
+.sec{display:flex;flex-direction:column;gap:3px}
+.lbl{font-size:8px;font-weight:600;letter-spacing:.1em;color:var(--dim);text-transform:uppercase}
+
+/* TABS FORMAT */
+.tabs{display:flex;gap:4px}
+.tab{
+  flex:1;padding:6px 4px;border-radius:6px;text-align:center;
+  font-size:9px;font-weight:600;cursor:pointer;
+  background:rgba(0,0,0,.3);border:1px solid var(--border);
+  color:var(--dim);transition:all .2s;
+}
+.tab.on{
+  background:rgba(255,74,158,.1);
+  border-color:var(--blue);color:#fff;
+}
+
+/* INPUT */
+.inp{
+  width:100%;background:rgba(0,0,0,.4);
+  border:1px solid var(--border);border-radius:6px;
+  color:var(--text);padding:6px 8px;
+  font-size:10px;font-family:'Inter',sans-serif;
+  outline:none;transition:border .15s;
+}
+.inp:focus{border-color:var(--blue)}
+.inp::placeholder{color:var(--dim);font-size:9px}
+select.inp{cursor:pointer;font-size:9px}
+select.inp option{background:#1a0812}
+
+/* ROW */
+.row{display:flex;gap:4px;align-items:center}
+.row>.inp{flex:1}
+
+/* MINIATURE - toute petite, inline */
+.thumb{
+  display:none;
+  flex-direction:column;align-items:center;gap:5px;
+  background:rgba(0,0,0,.35);
+  border:1px solid var(--border);
+  border-radius:8px;padding:7px;
+  animation:fadein .2s ease;
+  position:relative;
+}
+@keyframes fadein{from{opacity:0}to{opacity:1}}
+.thumb-img{
+  width:160px;height:90px;
+  border-radius:6px;object-fit:cover;
+  background:rgba(255,74,158,.08);
+  display:block;flex-shrink:0;
+}
+.thumb-skel{
+  width:160px;height:90px;border-radius:6px;flex-shrink:0;
+  background:linear-gradient(90deg,rgba(255,74,158,.05) 0%,rgba(255,74,158,.15) 50%,rgba(255,74,158,.05) 100%);
+  background-size:200% 100%;
+  animation:skel 1.4s infinite;
+}
+@keyframes skel{0%{background-position:100% 0}100%{background-position:-100% 0}}
+.thumb-txt{width:100%;text-align:center}
+.thumb-name{font-size:8px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.thumb-plat{font-size:7px;color:var(--dim)}
+.thumb-x{position:absolute;top:4px;right:5px;background:none;border:none;color:var(--dim);font-size:9px;cursor:pointer;padding:0;line-height:1}
+.thumb-x:hover{color:#ff6b6b}
+
+/* COOKIES */
+.ck-hdr{display:flex;justify-content:space-between;align-items:center}
+.ck-ok{font-size:8px;font-weight:700;color:var(--green)}
+.ck-no{font-size:8px;font-weight:700;color:#ff6b6b}
+.ck-btn{
+  width:100%;background:rgba(255,74,158,.05);
+  border:1px dashed rgba(255,74,158,.2);border-radius:6px;
+  color:var(--blue);font-size:9px;font-weight:500;
+  padding:6px 8px;cursor:pointer;font-family:'Inter',sans-serif;
+  transition:all .2s;display:flex;align-items:center;gap:6px;
+}
+.ck-btn:hover{border-color:var(--blue);background:rgba(255,74,158,.1)}
+.ck-help{font-size:8px;color:var(--dim);line-height:1.6}
+.ck-help b{color:rgba(93,255,160,.7)}
+
+/* IBTN */
+.ibtn{
+  background:rgba(0,0,0,.4);border:1px solid var(--border);
+  border-radius:6px;color:var(--dim);
+  padding:5px 7px;font-size:11px;cursor:pointer;
+  transition:all .15s;flex-shrink:0;
+}
+.ibtn:hover{border-color:var(--blue);color:var(--blue)}
+
+/* WARN */
+.warn{
+  background:rgba(255,60,60,.06);border:1px solid rgba(255,80,80,.2);
+  border-radius:6px;padding:7px 8px;font-size:9px;color:#ff8888;
+  display:none;line-height:1.5;
+}
+
+/* DOWNLOAD */
+.dl-btn{
+  width:100%;padding:10px;border-radius:8px;
+  background:linear-gradient(135deg,#3a0a2a,#2a0518);
+  color:#fff;font-size:11px;font-weight:700;
+  font-family:'Space Mono',monospace;cursor:pointer;
+  transition:all .2s;letter-spacing:.03em;
+  border:1px solid rgba(255,74,158,.3);
+  position:relative;overflow:hidden;flex-shrink:0;
+}
+.dl-btn:hover{border-color:var(--blue);box-shadow:0 4px 18px var(--glow-b);transform:translateY(-1px)}
+.dl-btn:active{transform:none}
+.dl-btn:disabled{background:rgba(0,0,0,.3);color:var(--dim);border-color:var(--border);cursor:not-allowed;transform:none;box-shadow:none}
+
+/* PROGRESS */
+.prg{
+  background:rgba(0,0,0,.3);border:1px solid var(--border);
+  border-radius:8px;padding:8px;display:none;
+}
+.prg-top{display:flex;justify-content:space-between;margin-bottom:5px}
+.prg-lbl{font-size:9px;font-weight:600;font-family:'Space Mono',monospace}
+.prg-pct{font-size:9px;font-weight:700;color:var(--green);font-family:'Space Mono',monospace}
+.prg-track{height:3px;background:rgba(255,255,255,.05);border-radius:2px;overflow:hidden;margin-bottom:4px}
+.prg-fill{height:100%;width:0;border-radius:2px;background:linear-gradient(90deg,#ff4a9e,#ff8cd4);transition:width .3s}
+.prg-det{font-size:8px;color:var(--dim);font-family:'Space Mono',monospace}
+
+/* ACTIONS */
+.acts{display:flex;gap:4px}
+.act{
+  flex:1;background:rgba(0,0,0,.3);
+  border:1px solid var(--border);border-radius:6px;
+  color:var(--dim);font-size:8px;font-weight:600;
+  padding:6px 2px;cursor:pointer;text-align:center;
+  font-family:'Inter',sans-serif;transition:all .2s;line-height:1.5;
+}
+.act:hover{border-color:rgba(255,74,158,.3);color:var(--green)}
+.act:disabled{opacity:.2;cursor:not-allowed;pointer-events:none}
+.act .ic{font-size:12px;display:block;margin-bottom:1px}
+.import-ready{
+  color:var(--green) !important;
+  border-color:var(--green) !important;
+  background:rgba(255,74,158,.08) !important;
+  animation:pulse 1.5s ease-in-out infinite;
+}
+@keyframes pulse{
+  0%,100%{box-shadow:0 0 4px rgba(255,74,158,.2)}
+  50%{box-shadow:0 0 14px rgba(255,74,158,.5)}
+}
+
+/* LOG */
+.log{
+  flex:1;min-height:70px;max-height:100px;
+  background:rgba(0,0,0,.4);border:1px solid rgba(255,74,158,.07);
+  border-radius:6px;overflow-y:auto;
+  padding:5px 7px;font-family:'Space Mono',monospace;
+  font-size:8px;line-height:1.6;
+}
+.log::-webkit-scrollbar{width:2px}
+.log::-webkit-scrollbar-thumb{background:var(--border)}
+.l{display:block}
+.l.ok{color:var(--green)}.l.e{color:#ff6b6b}.l.w{color:#ffaa44}.l.i{color:#3a1830}
+
+.sep{height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);flex-shrink:0}
+
+/* ── ANIMATIONS GRENOUILLE ── */
+.frog-anim-wrap{
+  display:none;
+  flex-direction:column;align-items:center;gap:4px;
+  padding:6px 0;flex-shrink:0;
+}
+.frog-stage{
+  position:relative;width:100%;height:52px;overflow:hidden;
+}
+.frog-run{
+  position:absolute;bottom:0;
+  font-size:22px;line-height:1;
+  animation:frogRun 2.2s linear infinite;
+  filter:drop-shadow(0 2px 4px rgba(255,74,158,.3));
+}
+@keyframes frogRun{
+  0%  {left:-10%;transform:scaleX(1)}
+  49% {left:105%;transform:scaleX(1)}
+  50% {left:105%;transform:scaleX(-1)}
+  99% {left:-10%;transform:scaleX(-1)}
+  100%{left:-10%;transform:scaleX(1)}
+}
+.frog-jump{
+  position:absolute;bottom:0;left:50%;transform:translateX(-50%);
+  font-size:26px;line-height:1;
+  animation:frogJump 1.4s ease-in-out infinite;
+  filter:drop-shadow(0 2px 6px rgba(255,74,158,.4));
+}
+@keyframes frogJump{
+  0%,100%{bottom:0;transform:translateX(-50%) rotate(0deg) scaleX(1)}
+  25%    {bottom:18px;transform:translateX(-60%) rotate(-12deg) scaleX(1)}
+  50%    {bottom:28px;transform:translateX(-50%) rotate(0deg) scaleX(1)}
+  75%    {bottom:18px;transform:translateX(-40%) rotate(12deg) scaleX(1)}
+}
+.frog-spin{
+  position:absolute;right:12px;bottom:2px;
+  font-size:20px;
+  animation:frogSpin 2s ease-in-out infinite;
+}
+@keyframes frogSpin{
+  0%,100%{transform:rotate(0deg) scale(1)}
+  30%    {transform:rotate(180deg) scale(1.2)}
+  60%    {transform:rotate(360deg) scale(0.8)}
+}
+.frog-msg{
+  font-size:8px;color:var(--green);font-family:'Space Mono',monospace;
+  letter-spacing:.08em;text-align:center;
+  animation:blink 1.8s ease-in-out infinite;
+}
+@keyframes blink{0%,100%{opacity:.4}50%{opacity:1}}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- HEADER -->
+  <div class="hdr">
+    <img class="frog" src="frog.png" alt="🐸"/>
+    <div>
+      <div class="hdr-t">LORD OF FROGS</div>
+      <div class="hdr-s">Media Downloader · v4.1</div>
+    </div>
+  </div>
+
+  <div class="warn" id="warn">⚠ yt-dlp introuvable — lancez INSTALL.bat en admin.</div>
+
+  <!-- FORMAT -->
+  <div class="sec">
+    <span class="lbl">Format</span>
+    <div class="tabs">
+      <div class="tab on" id="tabV" onclick="setFmt('mp4')">▶ VIDEO</div>
+      <div class="tab"    id="tabA" onclick="setFmt('mp3')">♪ AUDIO</div>
+    </div>
+  </div>
+
+  <!-- URL + MINIATURE -->
+  <div class="sec">
+    <span class="lbl">Lien</span>
+    <div class="row">
+      <input class="inp" id="url" placeholder="YouTube · Instagram · TikTok..."/>
+      <button class="ibtn" id="pasteBtn">⌘</button>
+    </div>
+    <!-- MINIATURE INLINE TOUTE PETITE -->
+    <div class="thumb" id="thumbWrap">
+      <div class="thumb-skel" id="thumbSkel"></div>
+      <img class="thumb-img" id="thumbImg" src="" alt="" style="display:none"/>
+      <div class="thumb-txt">
+        <div class="thumb-name" id="thumbTitle">...</div>
+        <div class="thumb-plat" id="thumbMeta"></div>
+      </div>
+      <button class="thumb-x" id="thumbClose">✕</button>
+    </div>
+  </div>
+
+  <!-- QUALITE -->
+  <div class="sec" id="qualCard">
+    <span class="lbl">Qualité</span>
+    <select class="inp" id="qual">
+      <option value="">Meilleure disponible</option>
+      <option value="1080">1080p</option>
+      <option value="720">720p</option>
+      <option value="480">480p</option>
+    </select>
+  </div>
+
+  <!-- COOKIES -->
+  <div class="sec">
+    <div class="ck-hdr">
+      <span class="lbl">Cookies YouTube</span>
+      <span id="ckSt" class="ck-no">● ABSENT</span>
+    </div>
+    <button class="ck-btn" id="ckBtn">📂 Charger cookies.txt</button>
+    <div class="ck-help">
+      1. <b>"Get cookies.txt LOCALLY"</b> sur Chrome<br>
+      2. youtube.com → Extension → <b>Export as .txt</b>
+    </div>
+  </div>
+
+  <!-- DESTINATION -->
+  <div class="sec">
+    <span class="lbl">Destination</span>
+    <div class="row">
+      <input class="inp" id="dest" placeholder="C:\Downloads\LordOfFrogs"/>
+      <button class="ibtn" id="browseBtn">📁</button>
+    </div>
+  </div>
+
+  <!-- DOWNLOAD -->
+  <button class="dl-btn" id="dlBtn">⟵ DOWNLOAD THE MEDIA ⟶</button>
+
+  <!-- PROGRESS -->
+  <div class="prg" id="prg">
+    <div class="prg-top">
+      <span class="prg-lbl" id="prgLbl">EN COURS...</span>
+      <span class="prg-pct" id="prgPct">0%</span>
+    </div>
+    <div class="prg-track"><div class="prg-fill" id="prgBar"></div></div>
+    <div class="prg-det" id="prgDet"></div>
+  </div>
+
+  <!-- FROG ANIMATION (visible pendant download) -->
+  <div class="frog-anim-wrap" id="frogAnim">
+    <div class="frog-stage">
+      <span class="frog-run" id="frogRunEmoji">🐸</span>
+      <span class="frog-jump">🐸</span>
+      <span class="frog-spin">🔪</span>
+    </div>
+    <div class="frog-msg" id="frogMsg">DOWNLOADING...</div>
+  </div>
+
+  <!-- ACTIONS -->
+  <div class="acts">
+    <button class="act" id="importBtn" disabled><span class="ic">⬇</span>IMPORT</button>
+    <button class="act" id="openBtn"><span class="ic">📂</span>DOSSIER</button>
+    <button class="act" id="updBtn"><span class="ic">↻</span>UPDATE</button>
+  </div>
+
+  <div class="sep"></div>
+  <div class="log" id="logBox"></div>
+
+</div>
+<script src="js/lib/CSInterface.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
